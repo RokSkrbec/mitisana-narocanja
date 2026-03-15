@@ -1,53 +1,50 @@
 <template>
-  <header class="flex items-center gap-3 px-4 py-2 border-b border-gray-200 bg-white z-10 flex-shrink-0">
-    <!-- Brand -->
-    <div class="flex items-center gap-2 mr-2">
-      <div class="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center">
-        <i class="pi pi-calendar text-white text-sm" />
-      </div>
-      <span class="font-bold text-gray-800 hidden sm:block">Mitisana</span>
+  <header class="border-b border-gray-200 bg-white z-10 flex-shrink-0">
+
+    <!-- Row 1: Brand + Navigation + Label -->
+    <div class="flex items-center gap-1 px-2 py-1.5">
+      <!-- Navigation -->
+      <Button icon="pi pi-chevron-left" text rounded size="small" @click="$emit('navigate', -1)" />
+      <Button label="Danes" text size="small" class="!px-2 !text-xs" @click="$emit('today')" />
+      <Button icon="pi pi-chevron-right" text rounded size="small" @click="$emit('navigate', 1)" />
+
+      <!-- Current period label -->
+      <span class="flex-1 text-xs font-semibold text-gray-700 text-center truncate px-1">
+        {{ headerLabel }}
+      </span>
+
+      <!-- Action icons — always visible -->
+      <Button
+        icon="pi pi-lock"
+        text rounded size="small"
+        severity="secondary"
+        v-tooltip.bottom="'Blokiraj čas'"
+        @click="$emit('block-time')"
+      />
+      <router-link to="/clients">
+        <Button icon="pi pi-users" text rounded size="small" v-tooltip.bottom="'Stranke'" />
+      </router-link>
+      <router-link to="/statistics">
+        <Button icon="pi pi-chart-bar" text rounded size="small" v-tooltip.bottom="'Statistika'" />
+      </router-link>
+      <router-link to="/settings">
+        <Button icon="pi pi-cog" text rounded size="small" v-tooltip.bottom="'Nastavitve'" />
+      </router-link>
+      <Button icon="pi pi-sign-out" text rounded size="small" severity="secondary" v-tooltip.bottom="'Odjava'" @click="logout" />
     </div>
 
-    <!-- Navigation -->
-    <Button icon="pi pi-chevron-left" text rounded size="small" @click="$emit('navigate', -1)" />
-    <Button label="Danes" text size="small" @click="$emit('today')" />
-    <Button icon="pi pi-chevron-right" text rounded size="small" @click="$emit('navigate', 1)" />
+    <!-- Row 2: View switcher (full width on mobile) -->
+    <div class="flex justify-center px-2 pb-1.5">
+      <SelectButton
+        :model-value="view"
+        :options="viewOptions"
+        option-label="label"
+        option-value="value"
+        size="small"
+        @update:model-value="$emit('change-view', $event)"
+      />
+    </div>
 
-    <!-- Current period label -->
-    <span class="flex-1 text-sm font-semibold text-gray-700 text-center truncate">
-      {{ headerLabel }}
-    </span>
-
-    <!-- View switcher -->
-    <SelectButton
-      :model-value="view"
-      :options="viewOptions"
-      option-label="label"
-      option-value="value"
-      size="small"
-      @update:model-value="$emit('change-view', $event)"
-    />
-
-    <!-- Settings & User -->
-    <Button
-      icon="pi pi-lock"
-      text
-      rounded
-      size="small"
-      severity="secondary"
-      v-tooltip.bottom="'Blokiraj čas'"
-      @click="$emit('block-time')"
-    />
-    <router-link to="/clients">
-      <Button icon="pi pi-users" text rounded size="small" v-tooltip.bottom="'Stranke'" />
-    </router-link>
-    <router-link to="/statistics">
-      <Button icon="pi pi-chart-bar" text rounded size="small" v-tooltip.bottom="'Statistika'" />
-    </router-link>
-    <router-link to="/settings">
-      <Button icon="pi pi-cog" text rounded size="small" v-tooltip.bottom="'Nastavitve'" />
-    </router-link>
-    <Button icon="pi pi-sign-out" text rounded size="small" severity="secondary" v-tooltip.bottom="'Odjava'" @click="logout" />
   </header>
 </template>
 

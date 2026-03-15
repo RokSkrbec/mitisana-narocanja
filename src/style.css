@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* PrimeVue overrides */
+.p-button {
+  border-radius: 0.5rem !important;
+}
+
+.p-dialog {
+  border-radius: 1rem !important;
+}
+
+.p-inputtext,
+.p-select,
+.p-datepicker-input {
+  border-radius: 0.5rem !important;
+}
+
+/* Pink primary theme for PrimeVue */
+:root {
+  --p-primary-50: #fdf2f8;
+  --p-primary-100: #fce7f3;
+  --p-primary-200: #fbcfe8;
+  --p-primary-300: #f9a8d4;
+  --p-primary-400: #f472b6;
+  --p-primary-500: #ec4899;
+  --p-primary-600: #db2777;
+  --p-primary-700: #be185d;
+  --p-primary-800: #9d174d;
+  --p-primary-900: #831843;
+  --p-primary-950: #500724;
+}

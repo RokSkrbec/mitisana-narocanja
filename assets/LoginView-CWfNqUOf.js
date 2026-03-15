@@ -1,4 +1,4 @@
-import{$t as e,Bt as t,Gt as n,Jt as r,Kt as i,O as a,Ot as o,Rt as s,S as c,T as l,Ut as u,Vt as d,Wt as f,Zt as p,an as m,b as h,cn as g,en as _,ln as v,mt as y,nn as b,on as x,pn as S,tn as C,un as w,x as T,y as E,zt as D}from"./config-DW9ciqWF.js";import{t as O}from"./index-CCjpHNi2.js";var k=a.extend({name:`message`,style:`
+import{$t as e,Bt as t,Gt as n,Jt as r,Kt as i,O as a,Ot as o,Rt as s,S as c,T as l,Ut as u,Vt as d,Wt as f,Zt as p,an as m,b as h,cn as g,en as _,ln as v,mt as y,nn as b,on as x,pn as S,tn as C,un as w,x as T,y as E,zt as D}from"./config-DW9ciqWF.js";import{t as O}from"./index-Bw3RJQou.js";var k=a.extend({name:`message`,style:`
     .p-message {
         display: grid;
         grid-template-rows: 1fr;

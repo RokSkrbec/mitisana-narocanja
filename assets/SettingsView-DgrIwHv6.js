@@ -1,4 +1,4 @@
-import{$t as e,Bt as t,Ft as n,Gt as r,Jt as i,Kt as a,O as o,Qt as s,Rt as c,T as l,Vt as u,Wt as d,Xt as f,Yt as p,Zt as m,an as h,cn as g,fn as _,ln as v,mt as y,on as b,pn as x,sn as S,tn as ee,un as C,x as w,y as T}from"./config-DW9ciqWF.js";import{a as E,i as D,s as te}from"./index-CCjpHNi2.js";import{n as ne,t as O}from"./inputnumber-CfYnqCXG.js";import{t as k}from"./inputtext-CbVjz0Me.js";import{t as A}from"./select-D_7H2Gcv.js";var j=o.extend({name:`divider`,style:`
+import{$t as e,Bt as t,Ft as n,Gt as r,Jt as i,Kt as a,O as o,Qt as s,Rt as c,T as l,Vt as u,Wt as d,Xt as f,Yt as p,Zt as m,an as h,cn as g,fn as _,ln as v,mt as y,on as b,pn as x,sn as S,tn as ee,un as C,x as w,y as T}from"./config-DW9ciqWF.js";import{a as E,i as D,s as te}from"./index-Bw3RJQou.js";import{n as ne,t as O}from"./inputnumber-CfYnqCXG.js";import{t as k}from"./inputtext-CbVjz0Me.js";import{t as A}from"./select-CvkzT2R-.js";var j=o.extend({name:`divider`,style:`
     .p-divider-horizontal {
         display: flex;
         width: 100%;

@@ -15,14 +15,38 @@
         {{ authStore.error }}
       </Message>
 
-      <!-- Google Sign-in -->
-      <Button
-        label="Prijava z Google računom"
-        icon="pi pi-google"
-        class="w-full justify-center"
-        :loading="loading"
-        @click="handleLogin"
-      />
+      <!-- Email / Password form -->
+      <form class="w-full flex flex-col gap-3" @submit.prevent="handleLogin">
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-600">E-pošta</label>
+          <InputText
+            v-model="email"
+            type="email"
+            placeholder="admin@example.com"
+            class="w-full"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-600">Geslo</label>
+          <InputText
+            v-model="password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <Button
+          type="submit"
+          label="Prijava"
+          icon="pi pi-sign-in"
+          class="w-full justify-center mt-1"
+          :loading="loading"
+        />
+      </form>
 
       <p class="text-xs text-gray-400 text-center">Dostop samo za administratorje</p>
     </div>
@@ -34,15 +58,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 
 const authStore = useAuthStore()
 const router = useRouter()
 const loading = ref(false)
+const email = ref('')
+const password = ref('')
 
 async function handleLogin() {
   loading.value = true
-  await authStore.loginWithGoogle()
+  await authStore.loginWithEmail(email.value, password.value)
   loading.value = false
   if (authStore.isAuthenticated) {
     router.push('/')

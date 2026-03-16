@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth'
-import { auth, googleProvider } from '../firebase/config'
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from 'firebase/auth'
+import { auth } from '../firebase/config'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -20,12 +20,16 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  async function loginWithGoogle() {
+  async function loginWithEmail(email: string, password: string) {
     error.value = null
     try {
-      await signInWithPopup(auth, googleProvider)
+      await signInWithEmailAndPassword(auth, email, password)
     } catch (e: any) {
-      error.value = e.message
+      if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
+        error.value = 'Napačen e-poštni naslov ali geslo.'
+      } else {
+        error.value = e.message
+      }
     }
   }
 
@@ -34,5 +38,5 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
-  return { user, loading, error, isAuthenticated, init, loginWithGoogle, logout }
+  return { user, loading, error, isAuthenticated, init, loginWithEmail, logout }
 })

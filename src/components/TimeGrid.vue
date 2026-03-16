@@ -65,9 +65,9 @@
           @touch-drag-start="(a, e) => onTouchDragStart(a, e)"
         />
 
-        <!-- Touch drag ghost — only shown once finger has moved -->
+        <!-- Touch drag ghost -->
         <div
-          v-if="touchDragging && touchHasMoved && touchDragDayIdx === colIdx"
+          v-if="touchDragging && touchDragDayIdx === colIdx"
           class="absolute left-1 right-1 rounded-lg opacity-70 pointer-events-none z-40 border-2 border-white"
           :style="{
             top: `${touchDragTop}px`,
@@ -191,18 +191,11 @@ const touchDragging = ref<Appointment | null>(null)
 const touchDragTop = ref(0)
 const touchDragDayIdx = ref(-1)
 let touchDragOffsetY = 0    // finger Y offset from top of the block
-let touchStartClientX = 0  // raw finger position at touchstart
-let touchStartClientY = 0
-const touchHasMoved = ref(false)   // true once finger moves beyond tap threshold
 
 function onTouchDragStart(appointment: Appointment, event: TouchEvent) {
   if (resizingId.value) return  // don't start drag while resizing
 
   const touch = event.touches[0]
-  touchStartClientX = touch.clientX
-  touchStartClientY = touch.clientY
-  touchHasMoved.value = false
-
   touchDragging.value = appointment
 
   // Compute offset using the appointment's known top position + column rect.
@@ -213,9 +206,7 @@ function onTouchDragStart(appointment: Appointment, event: TouchEvent) {
   if (colIdx >= 0 && colIdx < columnRefs.value.length) {
     const colRect = columnRefs.value[colIdx].getBoundingClientRect()
     const apptTopPx = props.topForTime(appointment.startTime)
-    // offset = where finger is within the block
     touchDragOffsetY = (touch.clientY - colRect.top) - apptTopPx
-    // clamp offset so it's within the block height
     const blockHeight = props.heightForDuration(appointment.startTime, appointment.endTime)
     touchDragOffsetY = Math.max(0, Math.min(touchDragOffsetY, blockHeight - props.slotHeight))
   }
@@ -249,15 +240,6 @@ function onTouchDragMove(event: TouchEvent) {
   event.preventDefault()
   const touch = event.touches[0]
 
-  // Mark as a real drag once finger travels more than 8px
-  if (!touchHasMoved.value) {
-    const dx = touch.clientX - touchStartClientX
-    const dy = touch.clientY - touchStartClientY
-    if (Math.sqrt(dx * dx + dy * dy) > 8) {
-      touchHasMoved.value = true
-    }
-  }
-
   touchDragDayIdx.value = getDayIdxAtX(touch.clientX)
   touchDragTop.value = getSnappedTopInColumn(touch.clientY, touchDragDayIdx.value)
 }
@@ -270,17 +252,9 @@ async function onTouchDragEnd(_event: TouchEvent) {
   if (!touchDragging.value) return
   const appt = touchDragging.value
   const colIdx = touchDragDayIdx.value
-  const wasDrag = touchHasMoved.value
 
   touchDragging.value = null
   touchDragDayIdx.value = -1
-  touchHasMoved.value = false
-
-  if (!wasDrag) {
-    // Tap — open the edit dialog
-    emit('edit-appointment', appt)
-    return
-  }
 
   const targetDay = props.days[Math.max(0, Math.min(colIdx, props.days.length - 1))]
   const newMinutesFromMidnight = Math.round(touchDragTop.value / props.slotHeight) * 5
@@ -301,7 +275,6 @@ function onTouchDragCancel() {
   window.removeEventListener('touchcancel', onTouchDragCancel)
   touchDragging.value = null
   touchDragDayIdx.value = -1
-  touchHasMoved.value = false
 }
 
 // ─── Current time indicator ───────────────────────────────────────────────

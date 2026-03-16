@@ -1,4 +1,4 @@
-import{Bt as e,D as t,Gt as n,Jt as r,Lt as i,Pt as a,Qt as o,Ut as s,Wt as c,Xt as l,Yt as u,Zt as d,an as ee,b as f,cn as p,dn as m,en as te,fn as h,in as g,ln as _,on as v,pt as y,qt as b,sn as x,v as S,w as C,zt as w}from"./config-B45yrKs1.js";import{a as T,i as E,s as D}from"./index-lngRsMFK.js";import{n as O,t as k}from"./inputnumber-jemLWR0e.js";import{t as A}from"./inputtext-CVTBCKIw.js";import{t as ne}from"./select-_1wMbDSA.js";var j=t.extend({name:`divider`,style:`
+import{Bt as e,D as t,Gt as n,Jt as r,Lt as i,Pt as a,Qt as o,Ut as s,Wt as c,Xt as l,Yt as u,Zt as d,an as ee,b as f,cn as p,dn as m,en as te,fn as h,in as g,ln as _,on as v,pt as y,qt as b,sn as x,v as S,w as C,zt as w}from"./config-B45yrKs1.js";import{a as T,i as E,s as D}from"./index-CIduS8Qk.js";import{n as O,t as k}from"./inputnumber-jemLWR0e.js";import{t as A}from"./inputtext-CVTBCKIw.js";import{t as ne}from"./select-GhZ0WV9L.js";var j=t.extend({name:`divider`,style:`
     .p-divider-horizontal {
         display: flex;
         width: 100%;

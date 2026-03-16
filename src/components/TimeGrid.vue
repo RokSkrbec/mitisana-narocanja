@@ -1,33 +1,60 @@
 <template>
-  <!-- Single scrollable container for both gutter + columns -->
+  <!-- Single scrollable container for headers + gutter + columns -->
   <div class="flex flex-1 min-h-0 overflow-y-auto overflow-x-auto">
 
-    <!-- Time gutter — sticky left -->
-    <div
-      class="sticky left-0 z-10 w-14 flex-shrink-0 border-r border-gray-100 bg-white relative"
-      :style="{ height: totalHeight + 'px' }"
-    >
+    <!-- Left side: time gutter (sticky) + empty header corner -->
+    <div class="sticky left-0 z-20 w-14 flex-shrink-0 flex flex-col bg-white">
+      <!-- Corner spacer — only shown when day headers are present -->
       <div
-        v-for="(slot, i) in timeSlots"
-        :key="slot"
-        class="absolute left-0 right-0 flex items-start justify-end pr-2"
-        :style="{ top: `${i * slotHeight}px`, height: `${slotHeight}px` }"
+        v-if="$slots['day-header']"
+        class="flex-shrink-0 border-b border-r border-gray-200"
+        style="height: 60px"
+      />
+      <!-- Time gutter -->
+      <div
+        class="relative flex-shrink-0 border-r border-gray-100"
+        :style="{ height: totalHeight + 'px' }"
       >
-        <span v-if="i % 12 === 0" class="text-[10px] text-gray-400 -translate-y-2">{{ slot }}</span>
+        <div
+          v-for="(slot, i) in timeSlots"
+          :key="slot"
+          class="absolute left-0 right-0 flex items-start justify-end pr-2"
+          :style="{ top: `${i * slotHeight}px`, height: `${slotHeight}px` }"
+        >
+          <span v-if="i % 12 === 0" class="text-[10px] text-gray-400 -translate-y-2">{{ slot }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- Day columns -->
-    <div class="flex flex-1">
+    <!-- Right side: day headers (if slotted) + day columns -->
+    <div class="flex flex-col flex-1">
+
+      <!-- Day headers row -->
       <div
-        v-for="(day, colIdx) in days"
-        :key="colIdx"
-        ref="columnRefs"
-        class="flex-1 min-w-[80px] border-r border-gray-100 relative"
-        :style="{ height: totalHeight + 'px' }"
-        @dragover="onDragOver($event)"
-        @drop="onDrop($event, day, columnRefs[colIdx])"
+        v-if="$slots['day-header']"
+        class="flex flex-shrink-0 border-b border-gray-200 bg-white"
+        style="height: 60px"
       >
+        <div
+          v-for="(day, colIdx) in days"
+          :key="colIdx"
+          class="flex-1 min-w-[60px]"
+        >
+          <slot name="day-header" :day="day" />
+        </div>
+      </div>
+
+      <!-- Day columns -->
+      <div class="flex flex-1">
+        <div
+          v-for="(day, colIdx) in days"
+          :key="colIdx"
+          ref="columnRefs"
+          class="flex-1 min-w-[60px] border-r border-gray-100 relative"
+          :style="{ height: totalHeight + 'px' }"
+          @dragover="onDragOver($event)"
+          @drop="onDrop($event, day, columnRefs[colIdx])"
+        >
         <!-- Horizontal hour lines -->
         <div
           v-for="(slot, i) in timeSlots"
@@ -76,8 +103,9 @@
           }"
         />
       </div>
-    </div>
-  </div>
+      </div><!-- end day columns row -->
+    </div><!-- end right side -->
+  </div><!-- end scroll container -->
 </template>
 
 <script setup lang="ts">

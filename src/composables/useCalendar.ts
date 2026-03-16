@@ -42,6 +42,9 @@ export function useCalendar() {
     })
   })
 
+  // Mon–Fri only (for mobile week view)
+  const workWeekDays = computed<Date[]>(() => weekDays.value.slice(0, 5))
+
   const monthDays = computed<Date[]>(() => {
     const year = currentDate.value.getFullYear()
     const month = currentDate.value.getMonth()
@@ -152,6 +155,7 @@ export function useCalendar() {
     navigate,
     startOfWeek,
     weekDays,
+    workWeekDays,
     monthDays,
     timeSlots,
     headerLabel,

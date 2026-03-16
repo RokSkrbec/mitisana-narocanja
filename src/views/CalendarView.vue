@@ -30,7 +30,7 @@
       <!-- Week View -->
       <WeekView
         v-else-if="view === 'week'"
-        :week-days="weekDays"
+        :week-days="isMobile ? workWeekDays : weekDays"
         :appointments="appointmentsStore.appointments"
         :time-slots="timeSlots"
         :slot-height="SLOT_HEIGHT_PX"
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useCalendar } from '../composables/useCalendar'
 import { useAppointmentsStore } from '../stores/appointments'
 import { useCategoriesStore } from '../stores/categories'
@@ -84,7 +84,7 @@ import AppointmentDialog from '../components/AppointmentDialog.vue'
 
 const {
   currentDate, view, goToToday, navigate,
-  weekDays, monthDays, timeSlots, headerLabel,
+  weekDays, workWeekDays, monthDays, timeSlots, headerLabel,
   SLOT_HEIGHT_PX, topForTime, heightForDuration,
   snapToFiveMinutes, appointmentsForDay, isSameDay, isCurrentMonth,
 } = useCalendar()
@@ -92,6 +92,11 @@ const {
 const appointmentsStore = useAppointmentsStore()
 const categoriesStore = useCategoriesStore()
 const clientsStore = useClientsStore()
+
+// Reactive window width for mobile detection (iPhone 12 = 390px)
+const windowWidth = ref(window.innerWidth)
+const isMobile = computed(() => windowWidth.value < 640)
+function onResize() { windowWidth.value = window.innerWidth }
 
 const dialogVisible = ref(false)
 const selectedAppointment = ref<Appointment | null>(null)
@@ -123,11 +128,13 @@ onMounted(() => {
   appointmentsStore.subscribe()
   categoriesStore.subscribeAll()
   clientsStore.subscribe()
+  window.addEventListener('resize', onResize)
 })
 
 onUnmounted(() => {
   appointmentsStore.unsubscribeAll()
   categoriesStore.unsubscribeAll()
   clientsStore.unsubscribeAll()
+  window.removeEventListener('resize', onResize)
 })
 </script>
